@@ -4,7 +4,7 @@ let left = 300;
 let leftArrow = false;
 let rightArrow = false;
 let attacking = false;
-const enemies = [];
+const enemies = []; // Array
 const enemyCount = 3;
 
 
@@ -45,8 +45,9 @@ function unCheckKey(e) {
 function updateGame() {
     currentBackground.style.objectPosition = `${-left}px`;
 
-        // Update enemy positions to stay fixed on background
+    // Update enemy positions to stay fixed on background
     enemies.forEach(enemy => {
+        enemy.initialX -= 0.5;
         enemy.element.style.left = `${enemy.initialX - left}px`;
     });
 
@@ -87,16 +88,17 @@ function moveCharacter(){
 
 function createEnemies() {
     for (let i = 0; i < enemyCount; i++) {
-        const enemy = document.createElement('img');
-        enemy.classList.add('enemy');
-        enemy.src = 'img/Minotaur_01/Minotaur_01_Walking_000.png';
-        enemy.style.left = `${500 + i * 300}px`; // Set different initial X positions
+        const enemy = document.createElement('img'); // <img>
+        enemy.classList.add('enemy'); // <img class="enemy">
+        // <img class="enemy" src="img/Minotaur_01/Minotaur_01_Walking_000.png">
+        enemy.src = 'img/Minotaur_01/Minotaur_01_Walking_000.png'; 
+
         document.getElementById('enemiesContainer').appendChild(enemy);
 
         // Store enemy's position
         enemies.push({
             element: enemy,
-            initialX: 500 + i * 300
+            initialX: 800 + i * 300
         });
     }
 }
