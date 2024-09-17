@@ -43,7 +43,9 @@ function unCheckKey(e) {
 }
 
 function updateGame() {
-    currentBackground.style.objectPosition = `${-left}px`;
+    currentBackground.style.left = `${-left}px`;
+    currentBackground2.style.left = `${-(left - 1721)}px`;
+    currentBackground3.style.left = `${-(left - 1721 * 2)}px`;
 
     // Update enemy positions to stay fixed on background
     enemies.forEach(enemy => {
@@ -52,10 +54,10 @@ function updateGame() {
     });
 
 
-    if(leftArrow) {
+    if(leftArrow && left > 0) {
         left -= 5;
     }
-    if(rightArrow) {
+    if(rightArrow && left < 3235) {
         left += 5;
     }
 
