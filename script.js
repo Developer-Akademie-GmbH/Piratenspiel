@@ -3,7 +3,7 @@ let state = 'IDLE';
 let left = 300;
 let leftArrow = false;
 let rightArrow = false;
-
+let attacking = false;
 
 setInterval(moveCharacter,75);
 setInterval(updateGame, 1000 / 60);
@@ -22,6 +22,9 @@ function checkKey(e) {
        // right arrow
        rightArrow = true;
        setState('WALK');
+    } 
+    if (e.keyCode == '68'){ // 'd' Taste 
+        attacking = true;
     }
 }
 
@@ -44,7 +47,9 @@ function updateGame() {
         left += 5;
     }
 
-    if(leftArrow || rightArrow) {
+    if(attacking) {
+        setState('ATTACK');
+    } else if(leftArrow || rightArrow) {
         setState('WALK');
     } else {
         setState('IDLE');
@@ -63,6 +68,7 @@ function moveCharacter(){
     }
 
     if(frame == 7) {
+        attacking = false;
         frame = 0;
     }
 }
