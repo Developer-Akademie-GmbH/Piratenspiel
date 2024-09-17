@@ -8,7 +8,7 @@ const enemies = []; // Array
 const enemyCount = 3;
 
 
-setInterval(moveCharacter,75);
+setInterval(moveCharacterAndEnemies,75);
 setInterval(updateGame, 1000 / 60);
 document.onkeydown = checkKey;
 document.onkeyup = unCheckKey;
@@ -68,7 +68,20 @@ function updateGame() {
     }
 }
 
-function moveCharacter(){
+function moveCharacterAndEnemies(){
+
+    enemies.forEach(enemy => {
+        if(enemy.frame < 10) {
+            enemy.element.src = `img/Minotaur_01/Minotaur_01_Walking_00${enemy.frame}.png`;
+        } else {
+            enemy.element.src = `img/Minotaur_01/Minotaur_01_Walking_0${enemy.frame}.png`;
+        }
+        enemy.frame++;
+        if(enemy.frame == 17) {
+            enemy.frame = 0;
+        }
+    });
+    
     pirate.src = `img/2/2_entity_000_${state}_00${frame}.png`;
     frame++;
     if(leftArrow) {
@@ -98,7 +111,8 @@ function createEnemies() {
         // Store enemy's position
         enemies.push({
             element: enemy,
-            initialX: 800 + i * 300
+            initialX: 800 + i * 300,
+            frame: i
         });
     }
 }
