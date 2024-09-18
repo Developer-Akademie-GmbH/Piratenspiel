@@ -5,6 +5,7 @@ let leftArrow = false;
 let rightArrow = false;
 let attacking = false;
 const enemies = []; // Array
+const bullets = []; // Array
 const enemyCount = 3;
 
 
@@ -36,13 +37,18 @@ function startAttack() {
     attacking = true;
     // Bullet anzeigen
 
-    const bullet = document.createElement('img'); // <img>
-    bullet.classList.add('bullet'); // <img class="bullet">
-    // <img class="enemy" src="img/bullet.png">
-    bullet.src = 'img/bullet.png'; 
+    setTimeout(function() {
+        const bullet = document.createElement('img'); // <img>
+        bullet.classList.add('bullet'); // <img class="bullet">
+        // <img class="enemy" src="img/bullet.png">
+        bullet.src = 'img/bullet.png'; 
+        document.body.appendChild(bullet);
 
-    document.body.appendChild(bullet);
-
+        bullets.push({
+            element: bullet,
+            initialX: 295
+        });
+    }, 0);
 }
 
 function unCheckKey(e) {
@@ -64,6 +70,11 @@ function updateGame() {
     enemies.forEach(enemy => {
         enemy.initialX -= 0.5;
         enemy.element.style.left = `${enemy.initialX - left}px`;
+    });
+
+    bullets.forEach(bullet => {
+        bullet.initialX += 15;
+        bullet.element.style.left = `${bullet.initialX}px`;
     });
 
 
