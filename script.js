@@ -151,10 +151,11 @@ function moveCharacterAndEnemies(){
 
 function createEnemies() {
     for (let i = 0; i < enemyCount; i++) {
+        const enemyType = Math.floor(Math.random() * 3) + 1;
         const enemy = document.createElement('img'); // <img>
         enemy.classList.add('enemy'); // <img class="enemy">
         // <img class="enemy" src="img/Minotaur_01/Minotaur_01_Walking_000.png">
-        enemy.src = 'img/Minotaur_01/Minotaur_01_Walking_000.png'; 
+        enemy.src = `img/Minotaur_0${enemyType}/Minotaur_0${enemyType}_Walking_000.png`; 
 
         document.getElementById('enemiesContainer').appendChild(enemy);
 
@@ -162,7 +163,8 @@ function createEnemies() {
         enemies.push({
             element: enemy,
             initialX: 800 + i * 600 * Math.random(),
-            frame: i % 17 // Mathematische Rest. Beispiel i = 20; 20 / 18 = 1 Rest 2
+            frame: i % 17, // Mathematische Rest. Beispiel i = 20; 20 / 18 = 1 Rest 2
+            type: enemyType
         });
     }
 }
@@ -201,9 +203,9 @@ function updateEnemies() {
         if (enemy.hit) {
             // Dying Animation
             if (enemy.frame < 10) {
-                enemy.element.src = `img/Minotaur_01/Minotaur_01_Dying_00${enemy.frame}.png`;
+                enemy.element.src = `img/Minotaur_0${enemy.type}/Minotaur_0${enemy.type}_Dying_00${enemy.frame}.png`;
             } else {
-                enemy.element.src = `img/Minotaur_01/Minotaur_01_Dying_0${enemy.frame}.png`;
+                enemy.element.src = `img/Minotaur_0${enemy.type}/Minotaur_0${enemy.type}_Dying_0${enemy.frame}.png`;
             }
             enemy.frame++;
             // Dying Animation endet bei Frame 14
@@ -213,9 +215,9 @@ function updateEnemies() {
         } else {
             // Walking Animation
             if (enemy.frame < 10) {
-                enemy.element.src = `img/Minotaur_01/Minotaur_01_Walking_00${enemy.frame}.png`;
+                enemy.element.src = `img/Minotaur_0${enemy.type}/Minotaur_0${enemy.type}_Walking_00${enemy.frame}.png`;
             } else {
-                enemy.element.src = `img/Minotaur_01/Minotaur_01_Walking_0${enemy.frame}.png`;
+                enemy.element.src = `img/Minotaur_0${enemy.type}/Minotaur_0${enemy.type}_Walking_0${enemy.frame}.png`;
             }
             enemy.frame++;
             if (enemy.frame == 17) {
