@@ -6,7 +6,7 @@ let rightArrow = false;
 let attacking = false;
 const enemies = []; // Array
 const bullets = []; // Array
-const enemyCount = 8;
+const enemyCount = 100;
 let backgroundMusic = new Audio('sounds/background_music.mp3');
 backgroundMusic.loop = true;
 backgroundMusic.volume = 0.1;
@@ -161,8 +161,8 @@ function createEnemies() {
         // Store enemy's position
         enemies.push({
             element: enemy,
-            initialX: 800 + i * 300,
-            frame: i
+            initialX: 800 + i * 600 * Math.random(),
+            frame: i % 17 // Mathematische Rest. Beispiel i = 20; 20 / 18 = 1 Rest 2
         });
     }
 }
