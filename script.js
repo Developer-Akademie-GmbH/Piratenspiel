@@ -11,6 +11,7 @@ const enemyCount = 3;
 
 setInterval(moveCharacterAndEnemies,75);
 setInterval(updateGame, 1000 / 60);
+setInterval(checkCollisions, 1000 / 60);
 document.onkeydown = checkKey;
 document.onkeyup = unCheckKey;
 createEnemies();
@@ -95,19 +96,7 @@ function updateGame() {
 }
 
 function moveCharacterAndEnemies(){
-
-    enemies.forEach(enemy => {
-        if(enemy.frame < 10) {
-            enemy.element.src = `img/Minotaur_01/Minotaur_01_Walking_00${enemy.frame}.png`;
-        } else {
-            enemy.element.src = `img/Minotaur_01/Minotaur_01_Walking_0${enemy.frame}.png`;
-        }
-        enemy.frame++;
-        if(enemy.frame == 17) {
-            enemy.frame = 0;
-        }
-    });
-    
+    updateEnemies();
     pirate.src = `img/2/2_entity_000_${state}_00${frame}.png`;
     frame++;
     if(leftArrow) {
@@ -142,6 +131,63 @@ function createEnemies() {
         });
     }
 }
+
+function checkCollisions() {
+    enemies.forEach(enemy => {
+        if (!enemy.hit) { // Nur ungetroffene Gegner prüfen
+            bullets.forEach((bullet, bulletIndex) => {
+                const bulletRect = bullet.element.getBoundingClientRect();
+                const enemyRect = enemy.element.getBoundingClientRect();
+
+                // Kollision überprüfen
+                if (
+                    bulletRect.left < enemyRect.right &&
+                    bulletRect.right > enemyRect.left &&
+                    bulletRect.top < enemyRect.bottom &&
+                    bulletRect.bottom > enemyRect.top
+                ) {
+                    // Treffer
+                    enemy.hit = true; // Gegner als getroffen markieren
+                    enemy.frame = 0; // Animation von vorne beginnen
+
+                    // Kugel entfernen
+                    bullet.element.remove(); // Entferne das Kugel-Element aus dem DOM
+                    bullets.splice(bulletIndex, 1); // Entferne die Kugel aus dem Array
+                }
+            });
+        }
+    });
+}
+
+function updateEnemies() {
+    enemies.forEach(enemy => {
+        if (enemy.hit) {
+            // Dying Animation
+            if (enemy.frame < 10) {
+                enemy.element.src = `img/Minotaur_01/Minotaur_01_Dying_00${enemy.frame}.png`;
+            } else {
+                enemy.element.src = `img/Minotaur_01/Minotaur_01_Dying_0${enemy.frame}.png`;
+            }
+            enemy.frame++;
+            // Dying Animation endet bei Frame 14
+            if (enemy.frame > 14) {
+                enemy.frame = 14; // Bleibt auf dem letzten Bild stehen
+            }
+        } else {
+            // Walking Animation
+            if (enemy.frame < 10) {
+                enemy.element.src = `img/Minotaur_01/Minotaur_01_Walking_00${enemy.frame}.png`;
+            } else {
+                enemy.element.src = `img/Minotaur_01/Minotaur_01_Walking_0${enemy.frame}.png`;
+            }
+            enemy.frame++;
+            if (enemy.frame == 17) {
+                enemy.frame = 0;
+            }
+        }
+    });
+}
+
 
 
 function setState(newState) {
