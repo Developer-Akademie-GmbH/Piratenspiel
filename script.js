@@ -7,6 +7,13 @@ let attacking = false;
 const enemies = []; // Array
 const bullets = []; // Array
 const enemyCount = 8;
+let backgroundMusic = new Audio('sounds/background_music.mp3');
+backgroundMusic.loop = true;
+backgroundMusic.volume = 0.1;
+let hit = new Audio('sounds/hit.MP3');
+let shot = new Audio('sounds/shot.mp3');
+let walk = new Audio('sounds/walk.mp3');
+walk.loop=true;
 
 
 setInterval(moveCharacterAndEnemies,75);
@@ -19,6 +26,10 @@ createEnemies();
 
 function checkKey(e) {
     e = e || window.event;
+
+    if(backgroundMusic.paused) {
+        backgroundMusic.play();
+    }
 
     if (e.keyCode == '37') {
        // left arrow
@@ -40,6 +51,8 @@ function startAttack() {
     // Bullet anzeigen
 
     setTimeout(function() {
+        shot.currentTime = 0;
+        shot.play();
         const bullet = document.createElement('img'); // <img>
         bullet.classList.add('bullet'); // <img class="bullet">
         // <img class="enemy" src="img/bullet.png">
@@ -88,6 +101,10 @@ function updateGame() {
         }
         if(rightArrow && left < 3235) {
             left += 5;
+        }
+
+        if(leftArrow || rightArrow) {
+            walk.play();
         }
 
         if(attacking) {
@@ -160,6 +177,8 @@ function checkCollisions() {
                     bulletRect.bottom > enemyRect.top
                 ) {
                     // Treffer
+                    hit.currentTime = 0;
+                    hit.play();
                     enemy.hit = true; // Gegner als getroffen markieren
                     enemy.frame = 5; // Animation von vorne beginnen
 
