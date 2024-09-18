@@ -21,6 +21,7 @@ body {
     width: 250px;
     object-fit: cover;
     object-position: 0px;
+    z-index: 1;
 }
 
 .enemy {

@@ -6,7 +6,7 @@ let rightArrow = false;
 let attacking = false;
 const enemies = []; // Array
 const bullets = []; // Array
-const enemyCount = 3;
+const enemyCount = 8;
 
 
 setInterval(moveCharacterAndEnemies,75);
@@ -69,7 +69,9 @@ function updateGame() {
 
     // Update enemy positions to stay fixed on background
     enemies.forEach(enemy => {
-        enemy.initialX -= 0.5;
+        if(!enemy.hit) {
+            enemy.initialX -= 0.5;
+        }
         enemy.element.style.left = `${enemy.initialX - left}px`;
     });
 
@@ -148,7 +150,7 @@ function checkCollisions() {
                 ) {
                     // Treffer
                     enemy.hit = true; // Gegner als getroffen markieren
-                    enemy.frame = 0; // Animation von vorne beginnen
+                    enemy.frame = 5; // Animation von vorne beginnen
 
                     // Kugel entfernen
                     bullet.element.remove(); // Entferne das Kugel-Element aus dem DOM
