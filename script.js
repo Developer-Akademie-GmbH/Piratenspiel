@@ -12,6 +12,7 @@ backgroundMusic.loop = true;
 backgroundMusic.volume = 0.1;
 let hit = new Audio('sounds/hit.MP3');
 let shot = new Audio('sounds/shot.mp3');
+let gameOver = new Audio('sounds/game-over.mp3');
 let walk = new Audio('sounds/walk.mp3');
 walk.loop=true;
 
@@ -25,25 +26,27 @@ document.onkeyup = unCheckKey;
 createEnemies();
 
 function checkKey(e) {
-    e = e || window.event;
+    if(state !== 'DIE') {
+        e = e || window.event;
 
-    if(backgroundMusic.paused) {
-        backgroundMusic.play();
-    }
+        if(backgroundMusic.paused) {
+            // backgroundMusic.play(); // Bitte einkommentieren, wenn du Musik willst
+        }
 
-    if (e.keyCode == '37') {
-       // left arrow
-       leftArrow = true;
-       setState('WALK');
-    }
-    else if (e.keyCode == '39') {
-       // right arrow
-       rightArrow = true;
-       setState('WALK');
+        if (e.keyCode == '37') {
+        // left arrow
+        leftArrow = true;
+        setState('WALK');
+        }
+        else if (e.keyCode == '39') {
+        // right arrow
+        rightArrow = true;
+        setState('WALK');
+        } 
+        if (e.keyCode == '68'){ // 'd' Taste 
+            startAttack();
+        }
     } 
-    if (e.keyCode == '68'){ // 'd' Taste 
-        startAttack();
-    }
 }
 
 function startAttack() {
@@ -79,8 +82,8 @@ function unCheckKey(e) {
 function updateGame() {
     if (state !== 'DIE') {
         currentBackground.style.left = `${-left}px`;
-        currentBackground2.style.left = `${-(left - 1721)}px`;
-        currentBackground3.style.left = `${-(left - 1721 * 2)}px`;
+        currentBackground2.style.left = `${-(left - currentBackground.width)}px`;
+        currentBackground3.style.left = `${-(left - currentBackground.width * 2)}px`;
 
         // Update enemy positions to stay fixed on background
         enemies.forEach(enemy => {
@@ -105,6 +108,8 @@ function updateGame() {
 
         if(leftArrow || rightArrow) {
             walk.play();
+        } else {
+            walk.pause();
         }
 
         if(attacking) {
@@ -251,6 +256,9 @@ function checkCharacterCollision() {
                 // Bewegung des Charakters und der Gegner stoppen
                 leftArrow = false;
                 rightArrow = false;
+                walk.pause();
+                backgroundMusic.pause();
+                gameOver.play();
 
                 // Gegnerbewegung stoppen
                 enemies.forEach(enemy => {
