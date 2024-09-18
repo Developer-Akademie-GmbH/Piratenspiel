@@ -40,3 +40,12 @@ body {
     left: 0;
     top: 0;
 }
+
+.bullet {
+    position: absolute;
+    bottom: 167px;
+    left: 295px;
+    width: 30px;
+    height: 40px;
+    transform: rotate(90deg);
+}
